@@ -1,0 +1,86 @@
+version: 2.1
+
+workflows:
+  workflow:
+    jobs:
+      - lint:
+          name: Python and Markdown linting
+      - spelling:
+          name: Spell check
+
+jobs:
+  lint:
+    docker:
+      - image: cimg/python:3.8-node
+    steps:
+      - checkout
+      - run:
+          name: Install enchant
+          command: |
+            sudo apt update
+            sudo apt install enchant-2
+      - run:
+          name: Install markdownlint
+          command: sudo npm install markdownlint-cli2 --global
+      - run:
+          name: Install pyright
+          command: sudo npm install pyright --global
+      - run:
+          name: Upgrade pip
+          command: pip3 install --upgrade pip
+      - run:
+          name: Install linters
+          command: pip3 install bandit black flake8 pydocstyle pyenchant pylint
+      - run:
+          name: Install Voight-Kampff
+          command: pip3 install ."[test]"
+      - run:
+          name: Bandit
+          command: vk bandit
+      - run:
+          name: Black
+          command: vk black
+      - run:
+          name: Flake8
+          command: vk flake8
+      - run:
+          name: Markdownlint
+          command: vk markdownlint
+      - run:
+          name: Pydocstyle
+          command: vk pydocstyle
+      - run:
+          name: Pyright
+          command: vk pyright
+      - run:
+          name: Pylint
+          command: vk pylint
+
+  spelling:
+    docker:
+      - image: cimg/python:3.8-node
+    steps:
+      - checkout
+      - run:
+          name: Install enchant
+          command: |
+            sudo apt update
+            sudo apt install enchant-2
+      - run:
+          name: Install cSpell
+          command: sudo npm install cspell --global
+      - run:
+          name: Upgrade pip
+          command: pip3 install --upgrade pip
+      - run:
+          name: Install Voight-Kampff
+          command: pip3 install ."[test]"
+      - run:
+          name: Install pyenchant and pylint
+          command: pip3 install pyenchant pylint
+      - run:
+          name: cSpell
+          command: vk cspell
+      - run:
+          name: Pylint spelling
+          command: vk pylint-spelling
