@@ -27,6 +27,12 @@ LINTER_TASKS = {
         "Flake8",
         "flake8",
     ),
+    "isort": Task(
+        "iSort",
+        "isort",
+        ["--check"],
+        glob_file_type="py",
+    ),
     "markdownlint": Task(
         "Markdownlint",
         "markdownlint-cli2",

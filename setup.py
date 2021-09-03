@@ -30,6 +30,7 @@ setup(
         "bandit",
         "black",
         "flake8",
+        "isort",
         "pydocstyle",
         "pylint",
         "pyenchant",
