@@ -7,6 +7,7 @@ command line application, `vk`, which can be used to run the following linters
 - [Bandit](https://github.com/PyCQA/bandit)
 - [Black](https://github.com/psf/black)
 - [cspell](https://github.com/streetsidesoftware/cspell)
+- [isort](https://github.com/PyCQA/isort)
 - [Flake8](https://github.com/PyCQA/flake8)
 - [Markdownlint](https://github.com/DavidAnson/markdownlint)
 - [Pydocstyle](https://github.com/PyCQA/pydocstyle)
