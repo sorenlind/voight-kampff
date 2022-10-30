@@ -18,7 +18,7 @@ class Task:
         self,
         title: str,
         command: str,
-        args: List[str] = None,
+        args: Optional[List[str]] = None,
         glob_file_type: Optional[str] = None,
     ):
         """
@@ -71,7 +71,7 @@ class Task:
         print("")
         return process.returncode
 
-    def _list_files(self, base_folder: Path = None) -> List[str]:
+    def _list_files(self, base_folder: Optional[Path] = None) -> List[str]:
         if not self._glob_file_type:
             return []
 
