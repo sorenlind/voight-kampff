@@ -15,8 +15,7 @@ LINTER_TASKS = {
     "black": Task(
         "Black",
         "black",
-        ["--check"],
-        glob_file_type="py",
+        ["--check", "."],
     ),
     "cspell": Task(
         "cSpell",
