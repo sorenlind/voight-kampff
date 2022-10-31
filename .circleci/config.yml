@@ -1,14 +1,63 @@
 version: 2.1
 
+orbs:
+  gh: circleci/github-cli@1.0
+
 workflows:
   workflow:
     jobs:
+      - checkout:
+          name: Checkout
+          context: Default
+          filters:
+            tags:
+              only: /^v\d+\.\d+\.\d+$/
       - lint:
           name: Python and Markdown linting
+          requires:
+            - Checkout
+          filters:
+            tags:
+              only: /^v\d+\.\d+\.\d+$/
       - spelling:
           name: Spell check
+          requires:
+            - Checkout
+          filters:
+            tags:
+              only: /^v\d+\.\d+\.\d+$/
+      - build:
+          name: Build
+          context: Default
+          requires:
+            - Checkout
+          filters:
+            tags:
+              only: /^v\d+\.\d+\.\d+$/
+      - upload:
+          name: Upload
+          context: Default
+          requires:
+            - Python and Markdown linting
+            - Spell check
+            - Build
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v\d+\.\d+\.\d+$/
 
 jobs:
+  checkout:
+    docker:
+      - image: cimg/python:3.10
+    steps:
+      - checkout
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
   lint:
     docker:
       - image: cimg/python:3.8-node
@@ -84,3 +133,55 @@ jobs:
       - run:
           name: Pylint spelling
           command: vk pylint-spelling
+
+  build:
+    docker:
+      - image: cimg/python:3.10
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Upgrade pip
+          command: pip3 install --upgrade pip
+      - run:
+          name: Install build
+          command: pip install build
+      - run:
+          name: Substitute version
+          command: |
+            PACKAGE_VERSION=$(sed 's/^v//' \<<< ${CIRCLE_TAG:-0.0.0})
+            sed -i "s/0.0.0/$PACKAGE_VERSION/" ./voight_kampff/version.py
+      - run:
+          name: Check version number
+          command: python setup.py verify
+      - run:
+          name: Build
+          command: |
+            python3 -m build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+  upload:
+    docker:
+      - image: cimg/python:3.10
+    steps:
+      - gh/setup
+      - attach_workspace:
+          at: .
+      - run:
+          name: Upgrade pip
+          command: pip3 install --upgrade pip
+      - run:
+          name: Install twine
+          command: pip install twine
+      - run:
+          name: Upload
+          command: |
+            twine upload dist/*
+      - run:
+          name: Create release
+          command: |
+            echo Creating release
+            gh release create ${CIRCLE_TAG} ./dist/*.gz --title ${CIRCLE_TAG} --notes "$(git log `git tag --sort=-committerdate | head -1`...`git tag --sort=-committerdate | head -2 | tail -1` --pretty=format:"%h - **%s**%n%n%b")"
