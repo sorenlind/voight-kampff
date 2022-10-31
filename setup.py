@@ -1,9 +1,12 @@
 """Setup script for package."""
 # pylint: disable=consider-using-with
 
+import os
 import re
+import sys
+from typing import Optional
 
-from setuptools import find_packages, setup
+from setuptools import Command, find_packages, setup
 
 match = re.search(
     r'^VERSION\s*=\s*"(.*)"',
@@ -14,6 +17,39 @@ match = re.search(
 VERSION = match.group(1) if match else "???"
 with open("README.md", "rb") as f:
     LONG_DESCRIPTION = f.read().decode("utf-8")
+
+
+class VerifyVersion(Command):
+    """Command for verifying that git tag matches package version."""
+
+    description = "verify that the git tag matches package version"
+    user_options = []
+
+    def initialize_options(self):
+        """Implement required method for Command."""
+
+    def finalize_options(self):
+        """Implement required method for Command."""
+
+    def run(self):
+        """
+        Check that the git tag matches the package version.
+
+        If it doesn't match, exit.
+        """
+        tag = os.getenv("CIRCLE_TAG")
+        if not _validate_version(tag, VERSION):
+            info = f"Git tag: '{tag}' does not match package version: {VERSION}"
+            sys.exit(info)
+
+
+def _validate_version(tag: Optional[str], version: str) -> bool:
+    if not tag:
+        return version == "0.0.0"
+    if tag[0] != "v":
+        return False
+    return tag[1:] == version
+
 
 setup(
     name="voight-kampff",
@@ -60,6 +96,9 @@ setup(
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 3.8",
     ],
+    cmdclass={
+        "verify": VerifyVersion,
+    },
     entry_points={
         "console_scripts": [
             "vk = voight_kampff.__main__:main",
