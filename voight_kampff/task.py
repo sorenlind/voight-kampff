@@ -1,7 +1,7 @@
 """Task specification."""
 import subprocess  # nosec
 from pathlib import Path
-from typing import List, Optional
+from typing import List
 
 
 class Task:
@@ -11,15 +11,15 @@ class Task:
 
     title: str
     _command: str
-    _glob_file_type: Optional[str]
+    _glob_file_type: str | None
     _args: List[str]
 
     def __init__(
         self,
         title: str,
         command: str,
-        args: Optional[List[str]] = None,
-        glob_file_type: Optional[str] = None,
+        args: List[str] | None = None,
+        glob_file_type: str | None = None,
     ):
         """
         Initialize a new task specification.
@@ -27,12 +27,11 @@ class Task:
         Args:
             title (str): Title of the task for showing in CLI
             command (str): name of command to run.
-            args (List[str], optional): CLI arguments. Should not include arguments
-                specifying what files to process. Defaults to None.
-            glob_file_type (Optional[str], optional): The base folder will be searched
-                for files of this type and they will be added as arguments. Defaults to
+            args (List[str] | None, optional): CLI arguments. Should not include
+                arguments specifying what files to process. Defaults to None.
+            glob_file_type (str | None, optional): The base folder will be searched for
+                files of this type and they will be added as arguments. Defaults to
                 None.
-
         """
         self.title = title
         self._command = command
@@ -71,7 +70,7 @@ class Task:
         print("")
         return process.returncode
 
-    def _list_files(self, base_folder: Optional[Path] = None) -> List[str]:
+    def _list_files(self, base_folder: Path | None = None) -> List[str]:
         if not self._glob_file_type:
             return []
 

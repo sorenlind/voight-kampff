@@ -3,7 +3,6 @@
 import os
 import re
 import sys
-from typing import Optional
 
 from setuptools import Command, find_packages, setup
 
@@ -42,7 +41,7 @@ class VerifyVersion(Command):
             sys.exit(info)
 
 
-def _validate_version(tag: Optional[str], version: str) -> bool:
+def _validate_version(tag: str | None, version: str) -> bool:
     if not tag:
         return version == "0.0.0"
     if tag[0] != "v":
