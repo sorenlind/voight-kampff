@@ -68,8 +68,8 @@ setup(
         "flake8",
         "isort",
         "pydocstyle",
-        "pylint",
         "pyenchant",
+        "pylint",
     ],
     extras_require={
         "dev": [
@@ -78,13 +78,15 @@ setup(
             "pytest",
             "pytest-cov",
             "pytest-mock",
+            "pytest",
+            "rope",
             "tox",
         ],
         "test": [
             "coverage",
-            "pytest",
             "pytest-cov",
             "pytest-mock",
+            "pytest",
             "tox",
         ],
     },
