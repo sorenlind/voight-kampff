@@ -40,7 +40,7 @@ class Task:
         self._args = args or []
 
         if glob_file_type is not None and glob_file_type not in ["py", "md"]:
-            raise Exception("Bad file type", glob_file_type)
+            raise ValueError("Bad file type", glob_file_type)
 
     def run(self) -> int:
         """

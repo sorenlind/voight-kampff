@@ -89,7 +89,13 @@ class UniqueLintersAction(argparse.Action):
 
     # pylint: disable=too-few-public-methods
 
-    def __call__(self, parser, namespace, values: List[str], option_string=None):
+    def __call__(
+        self,
+        parser: argparse.ArgumentParser,
+        namespace: argparse.Namespace,
+        values: List[str],
+        option_string: str | None = None,
+    ):
         """
         Call the action.
 
@@ -109,14 +115,14 @@ class UniqueLintersAction(argparse.Action):
         setattr(namespace, self.dest, values)
 
 
-def _linter_task(linter: str):
+def _linter_task(linter: str) -> str:
     linter = linter.lower()
     if linter not in LINTER_TASKS:
         raise argparse.ArgumentTypeError(f"unsupported linter: '{linter}'")
     return linter
 
 
-def _run_linters(_, args: argparse.Namespace):
+def _run_linters(_: argparse.ArgumentParser, args: argparse.Namespace):
     print("👁  Running checks\n")
 
     all_passed = True

@@ -1,6 +1,5 @@
 """Setup script for package."""
-# pylint: disable=consider-using-with
-
+# pylint: disable=consider-using-with,no-self-use
 import os
 import re
 import sys
@@ -74,8 +73,9 @@ setup(
     extras_require={
         "dev": [
             "coverage",
-            "rope",
-            "pytest",
+            "flake8-annotations",
+            "flake8-plus",
+            "flake8-pytest-style",
             "pytest-cov",
             "pytest-mock",
             "pytest",
