@@ -40,7 +40,7 @@
     "--cov-report=xml:test-results/voight_kampff/cov-py38.xml",
     "--cov-report=html:test-results/voight_kampff/html"
   ],
-
+  "[git-commit]": { "editor.rulers": [50, 72] },
   "[markdown]": {
     "editor.wordWrap": "off",
     "editor.renderWhitespace": "all",
