@@ -57,7 +57,7 @@ jobs:
 
   lint:
     docker:
-      - image: cimg/python:3.8-node
+      - image: cimg/python:3.10-node
     steps:
       - checkout
       - run:
@@ -104,7 +104,7 @@ jobs:
 
   spelling:
     docker:
-      - image: cimg/python:3.8-node
+      - image: cimg/python:3.10-node
     steps:
       - checkout
       - run:
