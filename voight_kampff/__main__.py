@@ -9,7 +9,7 @@ LINTER_TASKS = {
     "bandit": Task(
         "Bandit",
         "bandit",
-        ["-c=.bandit"],
+        ["--ini", ".bandit"],
         glob_file_type="py",
     ),
     "black": Task(
@@ -60,6 +60,16 @@ LINTER_TASKS = {
 }
 
 LINTER_NAMES = list(LINTER_TASKS.keys())
+DEFAULT_LINTER_NAMES = [
+    "black",
+    "cspell",
+    "flake8",
+    "isort",
+    "markdownlint",
+    "pylint",
+    "pylint-spelling",
+    "pyright",
+]
 
 
 def main():
@@ -111,7 +121,7 @@ class UniqueLintersAction(argparse.Action):
                 )
             unique_values.append(value)
         if not values:
-            values = LINTER_NAMES
+            values = DEFAULT_LINTER_NAMES
         setattr(namespace, self.dest, values)
 
 

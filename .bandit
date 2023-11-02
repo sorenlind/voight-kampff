@@ -1,2 +1,2 @@
-skips:
-  - B101 # assert_used
+[bandit]
+skips = B101

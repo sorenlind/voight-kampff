@@ -76,13 +76,10 @@ jobs:
           command: pip3 install --upgrade pip
       - run:
           name: Install linters
-          command: pip3 install bandit black flake8 pydocstyle pyenchant pylint
+          command: pip3 install black flake8 pyenchant pylint
       - run:
           name: Install Voight-Kampff
-          command: pip3 install ."[test]"
-      - run:
-          name: Bandit
-          command: vk bandit
+          command: pip3 install ."[dev]"
       - run:
           name: Black
           command: vk black
@@ -92,9 +89,6 @@ jobs:
       - run:
           name: Markdownlint
           command: vk markdownlint
-      - run:
-          name: Pydocstyle
-          command: vk pydocstyle
       - run:
           name: Pyright
           command: vk pyright
@@ -120,7 +114,7 @@ jobs:
           command: pip3 install --upgrade pip
       - run:
           name: Install Voight-Kampff
-          command: pip3 install ."[test]"
+          command: pip3 install ."[dev]"
       - run:
           name: Install pyenchant and pylint
           command: pip3 install pyenchant pylint

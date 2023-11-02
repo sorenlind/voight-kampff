@@ -61,11 +61,9 @@ setup(
     keywords="",
     packages=find_packages(),
     install_requires=[
-        "bandit",
         "black",
         "flake8",
         "isort",
-        "pydocstyle",
         "pyenchant",
         "pylint",
     ],
@@ -73,6 +71,8 @@ setup(
         "dev": [
             "coverage",
             "flake8-annotations",
+            "flake8-bandit",
+            "flake8-docstrings",
             "flake8-plus",
             "flake8-pytest-style",
             "pytest-cov",

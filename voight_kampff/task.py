@@ -1,5 +1,5 @@
 """Task specification."""
-import subprocess  # nosec
+import subprocess  # noqa: S404
 from pathlib import Path
 from typing import List
 
@@ -51,7 +51,7 @@ class Task:
         """
         print(f"🐍 {self.title}{' ' * (30-len(self.title))}", end="", flush=True)
         files = self._list_files()
-        process = subprocess.run(  # nosec
+        process = subprocess.run(  # noqa: S603
             [self._command, *self._args, *files],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
